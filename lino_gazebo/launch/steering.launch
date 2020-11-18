@@ -1,0 +1,22 @@
+<launch>
+    <!-- Launch gazebo -->
+    <include file="$(find lino_gazebo)/launch/gazebo_willowgarage.launch"/>
+
+   <!-- launch rviz-->
+   <arg name="rviz_gazebo" default="$(find lino_description)/config/lino_gazebo.rviz"/>
+   <arg name="use_gui" value="false"/>
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rviz_gazebo)"/>
+
+    <node name="rqt_robot_steering" pkg="rqt_robot_steering" type="rqt_robot_steering">
+      <param name="default_topic" value="/cmd_vel"/>
+    </node>
+
+   <!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+      <param name="use_gui" value="$(arg use_gui)"/>
+      <rosparam param="source_list">[lino_controller/joint_states]</rosparam>
+   </node> -->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+
+
+</launch>

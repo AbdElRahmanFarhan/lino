@@ -1,0 +1,60 @@
+<!--    mass and inertia-->
+    <xacro:property name="PI_2" value="1.57079632679" />
+    <xacro:property name="base_link_m" value="2" />
+    <xacro:property name="r_wheel_m" value="0.5" />
+    <xacro:property name="l_wheel_m" value="0.5" />
+    <xacro:property name="front_castor_m" value="0.1" />
+    <xacro:property name="rear_castor_m" value="0.1" />
+    
+<!-- Dimensions-->
+<!-- base_link dimensions -->
+    <xacro:property name="base_link_h" value="0.1235" />
+    <xacro:property name="base_link_l" value="0.7" />
+    <xacro:property name="base_link_w" value="0.45" />
+<!-- wheels dimensions -->
+    <xacro:property name="wheels_from_ground" value="0.02" />
+    <xacro:property name="wheels_d" value="0.125" />
+    <xacro:property name="wheels_w" value="0.06" />
+	<xacro:property name="wheels_center_shift_base_link" value="${(wheels_d/2)-wheels_from_ground }" />
+    <xacro:property name="dist_bet_wheels" value="0.1575" />
+    <xacro:property name="dist_bet_castors" value="0.25" />
+<!-- Lidar dimensions-->
+    <xacro:property name="lidar_r" value="0.03" />
+    <xacro:property name="lidar_l" value="0.05" />
+    <xacro:property name="lidar_x" value="${0.625 - (base_link_l/2)}" />
+    <xacro:property name="lidar_z" value="${base_link_h+(lidar_l/2)}" />
+
+<!--    Lidar data-->
+    <xacro:property name="lidar_angular_res" value="${1}" />
+    <xacro:property name="lidar_angle" value="${(270/180)*(PI_2*2)}" />
+    <xacro:property name="lidar_min_range" value="${0.1}" />
+    <xacro:property name="lidar_max_range" value="${10}" />
+    <xacro:property name="lidar_linear_res" value="${0.001}" />
+
+<!--    materials-->
+    <material name="yellow">
+       <color rgba="1.0 1.0 0.1 1.0"/>
+    </material>
+    <material name="white">
+       <color rgba="1.0 1.0 1.0 1.0"/>
+    </material>
+    <material name="black">
+       <color rgba="0.0 0.0 0.0 1.0"/>
+    </material>
+    <material name="blue">
+       <color rgba="0.0 0.0 1.0 1.0"/>
+    </material>
+
+<!--    transmission block-->
+    <xacro:macro name="transmission_block" params="joint_name">
+        <transmission name="${joint_name}_trans">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${joint_name}">
+               <hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${joint_name}_motor">
+                <mechanicalReduction>1</mechanicalReduction>
+                <hardwareInterface>hardware_interface/VelocityInterface</hardwareInterface>
+            </actuator>
+        </transmission>
+    </xacro:macro>
